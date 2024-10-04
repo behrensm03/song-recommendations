@@ -19,3 +19,4 @@ def about():
 @app.route('/items', methods=['GET'])
 def get_items():
     return jsonify(items)
+
