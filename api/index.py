@@ -6,17 +6,28 @@ import json
 
 app = Flask(__name__)
 
-def load_model():
-    with open('tfidfmodel.pkl', 'rb') as f:
-        model = pickle.load(f)
-        return model
+MODEL = 'C'
+simMatrixPath = {
+    'A': 'similarity_matrix.npy',
+    'B': 'similarity_matrix_model_b.npy',
+    'C': 'similarity_matrix_model_c.npy',
+}
+
+# def load_model():
+#     with open('tfidfmodel.pkl', 'rb') as f:
+#         model = pickle.load(f)
+#         return model
     
 def load_artists():
     with open('filtered-indices.json', 'r') as f:
         artistToIndex = json.load(f)
         return artistToIndex
+
+def load_sim_matrix():
+    filePath = simMatrixPath[MODEL]
+    return np.load(filePath)
     
-simMatrix = np.load("similarity_matrix.npy")
+simMatrix = load_sim_matrix()
 artistToIndex = load_artists()
 indexToArtist = {artistToIndex[artist]: artist for artist in artistToIndex}
 
