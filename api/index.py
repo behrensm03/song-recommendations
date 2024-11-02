@@ -1,10 +1,13 @@
 from flask import Flask, jsonify, render_template, request
+from flask_cors import CORS, cross_origin
 import numpy as np
 import pickle
 import json
 # from sklearn.feature_extraction.text import TfidfVectorizer
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 MODEL = 'C'
 simMatrixPath = {
@@ -56,6 +59,7 @@ def submit():
     return render_template('submit.html', selection=selected_option, matches=sorted_similarities[:5])
 
 @app.route('/items', methods=['GET'])
+@cross_origin()
 def get_items():
     return jsonify(items)
 
