@@ -49,14 +49,23 @@ artists = [a for a in artistToIndex]
 def home():
     return render_template('index.html', options=artists)
 
-@app.route('/submit', methods=['POST'])
-def submit():
-    selected_option = request.form.get('options')
-    artistIndex = artistToIndex[selected_option]
+@app.route('/recommend', methods=['GET'])
+@cross_origin()
+def get_recommendations():
+    artistIndex = int(request.args.get('id'))
     artistSimVector = simMatrix[artistIndex]
     simVectorWithNames = [(indexToArtist[i], artistSimVector[i]) for i in range(len(artistSimVector))]
     sorted_similarities = sorted(simVectorWithNames, key=lambda x: x[1], reverse=True)
-    return render_template('submit.html', selection=selected_option, matches=sorted_similarities[:5])
+    return jsonify([{"name": x[0], "similarity": str(x[1])} for x in sorted_similarities[:5]])
+
+@app.route('/artists/', methods=['GET'])
+@app.route('/artists/<int:id>')
+@cross_origin()
+def get_artists(id=None):
+    if id is not None:
+        artistIndex = int(id) # TODO: better handling for bad input
+        return jsonify({'name': indexToArtist[artistIndex], 'id': artistIndex})
+    return jsonify(artistToIndex)
 
 @app.route('/items', methods=['GET'])
 @cross_origin()
