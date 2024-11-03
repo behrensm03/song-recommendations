@@ -65,7 +65,7 @@ def get_artists(id=None):
     if id is not None:
         artistIndex = int(id) # TODO: better handling for bad input
         return jsonify({'name': indexToArtist[artistIndex], 'id': artistIndex})
-    return jsonify(artistToIndex)
+    return jsonify([{"id": index, "name": name} for (name, index) in enumerate(artistToIndex)])
 
 @app.route('/items', methods=['GET'])
 @cross_origin()
