@@ -56,7 +56,7 @@ def get_recommendations():
     artistSimVector = simMatrix[artistIndex]
     simVectorWithNames = [(indexToArtist[i], artistSimVector[i]) for i in range(len(artistSimVector))]
     sorted_similarities = sorted(simVectorWithNames, key=lambda x: x[1], reverse=True)
-    return jsonify([{"name": x[0], "similarity": str(x[1])} for x in sorted_similarities[:5]])
+    return jsonify([{"name": x[0], "similarity": str(x[1]), "id": artistToIndex[x[0]]} for x in sorted_similarities[:5]])
 
 @app.route('/artists/', methods=['GET'])
 @app.route('/artists/<int:id>')
