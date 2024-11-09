@@ -53,10 +53,11 @@ def home():
 @cross_origin()
 def get_recommendations():
     artistIndex = int(request.args.get('id'))
+    # TODO: how do we handle multiple inputs
     artistSimVector = simMatrix[artistIndex]
     simVectorWithNames = [(indexToArtist[i], artistSimVector[i]) for i in range(len(artistSimVector))]
     sorted_similarities = sorted(simVectorWithNames, key=lambda x: x[1], reverse=True)
-    return jsonify([{"name": x[0], "similarity": str(x[1]), "id": artistToIndex[x[0]]} for x in sorted_similarities[:5]])
+    return jsonify([{"name": x[0], "similarity": str(x[1]), "id": artistToIndex[x[0]]} for x in sorted_similarities])
 
 @app.route('/artists/', methods=['GET'])
 @app.route('/artists/<int:id>')
