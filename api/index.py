@@ -48,10 +48,6 @@ def getAverageMatchesForIndices(indices):
     sortedFilteredAggSims = [x for x in sortedAggSims if artistToIndex[x[0]] not in indices]
     return jsonify([{"name": x[0], "similarity": str(x[1]), "id": artistToIndex[x[0]]} for x in sortedFilteredAggSims])
 
-@app.route('/test', methods=['GET'])
-def getTest():
-    return getAverageMatchesForIndices([64, 563])
-
 @app.route('/recommend', methods=['GET'])
 @cross_origin()
 def get_recommendations():
